@@ -18,10 +18,11 @@ type user struct {
 func main() {
 
 	fmt.Println("Welcome to Mashelling Tutorial of Go")
-	EncodeJson()
+	// EncodeJson()
+	DecodJson()
 }
 
-// func to Encode Data into Json
+// func to Encode Data into Json , To send API suppose
 
 func EncodeJson() {
 
@@ -51,4 +52,33 @@ func EncodeJson() {
 	fmt.Printf("\n%s\n", finalJsonNormal)
 	fmt.Printf("\n%s\n", finalJsonIntent)
 
+}
+
+// Decode Json , for Data come from API suppose and want to consume as JSON
+
+func DecodJson() {
+
+	// all data come from API is in to bytes format
+	jsonDataFromAPI := []byte(`  
+        {
+                "username": "King76",
+                "email": "king12@gmail.com",
+                "age": 34,
+                "tags": ["king","Ruler"]
+        }
+	`)
+
+	// before unmarshalling we need to check, is it a valid json ?
+	checkValid := json.Valid(jsonDataFromAPI)
+
+	// var to store json data
+	var users user
+	if checkValid {
+		fmt.Println("Json data is valid")
+		json.Unmarshal(jsonDataFromAPI, &users) // we need to pass address of original var
+		fmt.Printf("%#v\n", users)
+
+	} else {
+		fmt.Println("JSON isn ot valid")
+	}
 }
