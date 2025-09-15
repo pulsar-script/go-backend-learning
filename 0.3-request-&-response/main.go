@@ -11,7 +11,7 @@ import (
 func main() {
 	fmt.Println("Welcome to Get request tutorial of Go Backend Dev")
 
-	// PerformGetRequest()
+	PerformGetRequest()
 	PerformPostJsonRequest()
 	PerformPostFormRequest()
 }
@@ -88,7 +88,8 @@ func PerformPostFormRequest() {
 	data.Add("username", "king")
 
 	// call
-	response, err := http.PostForm(myUrl, data)
+	response, err := http.PostForm(myUrl, data) //* in form-data case in backend we dont get data in json format , thats why at the time of sending to frontend we have to convert it into json
+	//*  unlike, sending above non - from data / json data we pass to backend
 
 	if err != nil {
 		panic(err)
