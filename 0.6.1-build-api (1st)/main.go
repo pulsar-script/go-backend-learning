@@ -132,7 +132,14 @@ func createOneCourse(w http.ResponseWriter, r *http.Request) {
 	// what if: body is send but json is empty
 	var course Course
 
-	_ = json.NewDecoder(r.Body).Decode(&course) // decode and where to store json data , here we are using METHOD 1 storing into data-structure form
+	err := json.NewDecoder(r.Body).Decode(&course) // decode and where to store json data , here we are using METHOD 1 storing into data-structure form
+
+	if err != nil {
+		//Response with a bad request error
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode("Malformed JSON in request body")
+		return
+	}
 
 	if course.InEmpty() {
 		json.NewEncoder(w).Encode("No data in JSON")
@@ -175,7 +182,14 @@ func updateOneCourse(w http.ResponseWriter, r *http.Request) {
 
 			//TODO take new updated data for that course from request body and store into local var
 			var updatedCourse Course
-			_ = json.NewDecoder(r.Body).Decode(&updatedCourse) // we do decoding when we get json data from request
+			err := json.NewDecoder(r.Body).Decode(&updatedCourse) // we do decoding when we get json data from request
+
+			if err != nil {
+				// Respond with a bad request error
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode("Malformed JSON in request body")
+				return
+			}
 
 			//TODO Add new updated course into Courses with id get from params
 			course.CourseId = params["id"]           // we are just overwritting same value, for assurance
